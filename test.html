@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Shopping-cart</title>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/reponsive.css" />
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Muli', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+        }
+
+        li {
+            list-style: none;
+        }
+
+        /* header */
+        nav {
+            padding: 15px;
+            width: 100%;
+            display: flex;
+            background: #f1df11;
+        }
+
+        nav .content-nav {
+            display: flex;
+            line-height: 2rem;
+            flex-direction: row;
+            justify-content: flex-end;
+            width: 60%;
+        }
+
+        nav .content-nav ul {
+            display: flex;
+        }
+
+        nav .content-nav ul li a {
+            text-decoration: none;
+            color: #43433e;
+            text-transform: uppercase;
+            padding: 0 15px;
+            font-weight: 800;
+        }
+
+        nav .content-nav ul li a:hover {
+            color: #fff;
+        }
+
+        .content-nav form {
+            position: relative;
+        }
+
+        .content-nav form input {
+            border: none;
+            background: #fff;
+            padding: 7px;
+            outline: none;
+            border-radius: 12px;
+        }
+
+        .content-nav form button {
+            padding: 5px;
+            border-radius: 12px;
+            position: absolute;
+            right: 0;
+            top: 2px;
+            border: none;
+            outline: none;
+            background: #fff;
+        }
+
+        /* modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            margin: 0 auto;
+            width: 50%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid rgba(0, 0, 0, .2);
+            border-radius: .3rem;
+            outline: 0;
+
+        }
+
+        .modal-body {
+            padding: 1rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            border-top: 1px solid #aaaaaa;
+            padding: 1rem;
+            flex-direction: row;
+            justify-content: flex-end;
+            border-top: 1px solid #aaaaaa;
+            padding: 1rem;
+        }
+
+        .modal-footer>:not(:first-child) {
+            margin-left: .25rem;
+        }
+
+        .btn {
+            cursor: pointer;
+            outline: none;
+            font-weight: 400;
+            line-height: 1.25;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            border: 1px solid transparent;
+            padding: .5rem 1rem;
+            font-size: 1rem;
+            border-radius: .25rem;
+            transition: all .2s ease-in-out;
+        }
+
+        .btn-secondary {
+            color: #292b2c;
+            background-color: #fff;
+            border-color: #ccc;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background-color: #0275d8;
+            border-color: #0275d8;
+        }
+
+        .modal-header {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #aaaaaa;
+            padding: 1rem;
+        }
+
+        h5.modal-title {
+            font-size: 1.5rem;
+        }
+
+        .close {
+            color: #aaaaaa;
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #cart {
+            font-size: 15px;
+            color: #fff;
+            background: #c7b200;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            outline: none;
+            margin-left: 1rem;
+            padding: 12px;
+            cursor: pointer;
+        }
+
+        #cart:hover {
+            border-color: #fff;
+        }
+
+        /* wrapper */
+        .wrapper {
+            padding: 2rem;
+        }
+
+        .products ul {
+            display: inline-block;
+        }
+
+        .products ul .main-product {
+            margin-bottom: 2rem;
+            margin-right: 1rem;
+            display: block;
+            float: left;
+            width: 24%;
+        }
+
+        .products ul .no-margin {
+            margin-right: 0;
+        }
+
+        .products ul .img-product img {
+            width: 100%;
+        }
+
+        .content-product .content-product-h3 {
+            padding: .5rem 0;
+            overflow: hidden;
+            color: #222;
+            font-weight: 500;
+            font-size: 16px;
+            max-height: 50px;
+            min-height: 50px;
+            text-align: center;
+            line-height: 19px;
+            margin: 0 0 5px;
+        }
+
+        .content-product .content-product-deltals {
+            display: flex;
+            justify-content: center;
+            padding-top: 1rem;
+        }
+
+        .main-product .content-product .content-product-deltals .price {
+            color: #c7b200;
+            font-weight: 700;
+            margin-right: 1rem;
+            vertical-align: middle;
+            font-size: 20px;
+        }
+
+        .content-product .content-product-deltals .price .money {
+            vertical-align: middle;
+        }
+
+        .content-product .content-product-deltals .btn-cart {
+            background: #f1df11;
+            border-radius: 5px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .content-product .content-product-deltals .btn-cart:hover {
+            background: #c7b200;
+        }
+
+        /* footer */
+        .footer-item {
+            padding: .5rem 2rem;
+            background: #f1df11;
+            display: flex;
+
+        }
+
+        .footer-item .img-footer {
+            align-items: center;
+            display: flex;
+        }
+
+        .footer-item .img-footer img {
+            width: 100%;
+        }
+
+        .footer-item .social-footer {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: flex-end;
+        }
+
+        .footer-item .social-footer li a {
+            color: #000000;
+            font-size: 2rem;
+        }
+
+        .footer-item .social-footer li:last-child {
+            margin-left: .5rem;
+        }
+
+        /* footer */
+        .footer-item {
+            padding: .5rem 2rem;
+            background: #f1df11;
+            display: flex;
+
+        }
+
+        .footer-item .img-footer {
+            align-items: center;
+            display: flex;
+        }
+
+        .footer-item .img-footer img {
+            width: 100%;
+        }
+
+        .footer-item .social-footer {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: flex-end;
+        }
+
+        .footer-item .social-footer li a {
+            color: #000000;
+            font-size: 2rem;
+        }
+
+        .footer-item .social-footer li:last-child {
+            margin-left: .5rem;
+        }
+    </style>
+</head>
+<body>
+<!-- header -->
+<header>
+    <nav>
+        <div class="img-nav">
+            <img src="img/logo.png" alt="" />
+        </div>
+        <div class="content-nav">
+            <ul>
+                <li><a href="#">Trang Chủ</a></li>
+                <li><a href="#">Sản Phẩm</a></li>
+                <li><a href="#">Liên Hệ</a></li>
+                <li><a href="#">Giới Thiệu</a></li>
+            </ul>
+            <form>
+                <input type="text" name="search" placeholder="Tìm kiếm sản phẩm..." />
+                <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </form>
+        </div>
+        <!-- The Modal -->
+        <button id="cart">
+            <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+            Giỏ Hàng
+        </button>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Giỏ Hàng</h5>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="cart-row">
+                        <span class="cart-item cart-header cart-column">Sản Phẩm</span>
+                        <span class="cart-price cart-header cart-column">Giá</span>
+                        <span class="cart-quantity cart-header cart-column">Số Lượng</span>
+                    </div>
+                    <div class="cart-items">
+
+                    </div>
+                    <div class="cart-total">
+                        <strong class="cart-total-title">Tổng Cộng:</strong>
+                        <span class="cart-total-price">0VNĐ</span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close-footer">Đóng</button>
+                    <button type="button" class="btn btn-primary order">Thanh Toán</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- content -->
+<section class="wrapper">
+    <div class="products">
+        <ul>
+            <li class="main-product">
+                <div class="img-product">
+                    <img class="img-prd"
+                         src="https://bizweb.dktcdn.net/thumb/large/100/228/168/products/sualai.jpg?v=1573720306000"
+                         alt="">
+                </div>
+                <div class="content-product">
+                    <h3 class="content-product-h3">Mũi Hàn 500</h3>
+                    <div class="content-product-deltals">
+                        <div class="price">
+                            <span class="money">25000đ</span>
+                        </div>
+                        <button type="button" class="btn btn-cart">Thêm Vào Giỏ</button>
+                    </div>
+                </div>
+            </li>
+            <li class="main-product">
+                <div class="img-product">
+                    <img class="img-prd"
+                         src="https://bizweb.dktcdn.net/thumb/large/100/228/168/products/sp1-57698689-e2c0-429a-bf4f-3bd0f39230d8.jpg?v=1575337954000"
+                         alt="">
+                </div>
+                <div class="content-product">
+                    <h3 class="content-product-h3">Trạm Hàn Hakko 942 75W 200-480*C 220VAC Cực Nóng</h3>
+                    <div class="content-product-deltals">
+                        <div class="price">
+                            <span class="money">1299000đ</span>
+                        </div>
+                        <button type="button" class="btn btn-cart">Thêm Vào Giỏ</button>
+                    </div>
+                </div>
+            </li>
+            <li class="main-product">
+                <div class="img-product">
+                    <img class="img-prd"
+                         src="https://bizweb.dktcdn.net/thumb/large/100/228/168/products/sp1-a45a32a1-38d4-4a8a-9c37-e936013858b2.jpg?v=1575877003000"
+                         alt="">
+                </div>
+                <div class="content-product">
+                    <h3 class="content-product-h3">Máy Bơm Chìm Hộ Gia Đình QDX 1500W 220VAC 40L/1min H=8m</h3>
+                    <div class="content-product-deltals">
+                        <div class="price">
+                            <span class="money">1599000đ</span>
+                        </div>
+                        <button type="button" class="btn btn-cart">Thêm Vào Giỏ</button>
+                    </div>
+                </div>
+            </li>
+            <li class="main-product no-margin">
+                <div class="img-product">
+                    <img class="img-prd"
+                         src="https://bizweb.dktcdn.net/thumb/large/100/228/168/products/module-diy-sac-khong-day-5.jpg?v=1570011041000"
+                         alt="">
+                </div>
+                <div class="content-product">
+                    <h3 class="content-product-h3">Module DIY Sạc Không Dây Qi IOS/Androi - Bộ phát V2</h3>
+                    <div class="content-product-deltals">
+                        <div class="price">
+                            <span class="money">89000đ</span>
+                        </div>
+                        <button type="button" class="btn btn-cart">Thêm Vào Giỏ</button>
+                    </div>
+                </div>
+            </li>
+            <li class="main-product">
+                <div class="img-product">
+                    <img class="img-prd"
+                         src="https://bizweb.dktcdn.net/thumb/large/100/228/168/products/bo-dieu-chinh-dien-ap-sdty-200p.jpg?v=1560155769920"
+                         alt="">
+                </div>
+                <div class="content-product">
+                    <h3 class="content-product-h3">Bộ Điều Chỉnh Điện Áp CHLVFU SDTY-200P 20KW 200A (BH 06 Tháng)
+                    </h3>
+                    <div class="content-product-deltals">
+                        <div class="price">
+                            <span class="money">2199000đ</span>
+                        </div>
+                        <button type="button" class="btn btn-cart">Thêm Vào Giỏ</button>
+                    </div>
+                </div>
+            </li>
+            <li class="main-product">
+                <div class="img-product">
+                    <img class="img-prd"
+                         src="https://bizweb.dktcdn.net/thumb/large/100/228/168/products/isd1760-thu-am-thanh-phat-am-thanh-2.jpg?v=1568951032960"
+                         alt="">
+                </div>
+                <div class="content-product">
+                    <h3 class="content-product-h3">Module ISD1760 Thu Âm Thanh - Phát Âm Thanh 75s</h3>
+                    <div class="content-product-deltals">
+                        <div class="price">
+                            <span class="money">115000đ</span>
+                        </div>
+                        <button type="button" class="btn btn-cart">Thêm Vào Giỏ</button>
+                    </div>
+                </div>
+            </li>
+            <li class="main-product">
+                <div class="img-product">
+                    <img class="img-prd"
+                         src="https://bizweb.dktcdn.net/thumb/large/100/228/168/products/new-arrival-b-plus-64-bit-quad-2.jpg?v=1568277329707"
+                         alt="">
+                </div>
+                <div class="content-product">
+                    <h3 class="content-product-h3">Raspberry Pi 3 E14 Model B Plus B+ 2.4G/5G Bluetooth</h3>
+                    <div class="content-product-deltals">
+                        <div class="price">
+                            <span class="money">1295000đ</span>
+                        </div>
+                        <button type="button" class="btn btn-cart">Thêm Vào Giỏ</button>
+                    </div>
+                </div>
+            </li>
+            <li class="main-product no-margin">
+                <div class="img-product">
+                    <img class="img-prd"
+                         src="https://bizweb.dktcdn.net/thumb/large/100/228/168/products/module-iot-esp8266-esp-12e-ch340-3.jpg?v=1565950165000"
+                         alt="">
+                </div>
+                <div class="content-product">
+                    <h3 class="content-product-h3">Module IOT ESP8266 ESP-12E CH340 V3</h3>
+                    <div class="content-product-deltals">
+                        <div class="price">
+                            <span class="money">85000đ</span>
+                        </div>
+                        <button type="button" class="btn btn-cart">Thêm Vào Giỏ</button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<!-- footer -->
+<footer>
+    <div class="footer-item">
+        <div class="img-footer">
+            <img src="img/logo.png" alt="" />
+        </div>
+        <div class="social-footer">
+            <li><a target="_blank" href="https://www.facebook.com/thanhlongdev">
+                <i class="fa fa-facebook-square" aria-hidden="true"></i>
+            </a></li>
+            <li><a target="_blank" href="https://github.com/long1211">
+                <i class="fa fa-github-square" aria-hidden="true"></i>
+            </a></li>
+
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Modal
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementById("cart");
+    var close = document.getElementsByClassName("close")[0];
+    // tại sao lại có [0] như  thế này bởi vì mỗi close là một html colection nên khi mình muốn lấy giá trị html thì phải thêm [0].
+    // Nếu mình có 2 cái component cùng class thì khi [0] nó sẽ hiển thị component 1 còn [1] thì nó sẽ hiển thị component 2.
+    var close_footer = document.getElementsByClassName("close-footer")[0];
+    var order = document.getElementsByClassName("order")[0];
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+    close.onclick = function () {
+        modal.style.display = "none";
+    }
+    close_footer.onclick = function () {
+        modal.style.display = "none";
+    }
+    order.onclick = function () {
+        alert("Cảm ơn bạn đã thanh toán đơn hàng")
+    }
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>
