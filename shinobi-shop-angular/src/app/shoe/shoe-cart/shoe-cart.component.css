@@ -1,0 +1,11 @@
+.hover-gray:hover {
+  background-color: #c7c7c7;
+  color: black;
+  cursor: pointer;
+}
+
+.hover-green:hover {
+  background-color: lightseagreen;
+  color: white;
+  cursor: pointer;
+}

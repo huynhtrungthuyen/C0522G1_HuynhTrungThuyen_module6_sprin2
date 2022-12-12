@@ -1,0 +1,180 @@
+<section class="product-details spad" *ngIf="shoe != undefined">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-6">
+        <div class="product__details__pic">
+          <div class="product__details__pic__item" style="box-shadow:15px 15px 15px lightblue">
+            <img class="product__details__pic__item--large"
+                 src="{{shoe.image}}" alt="">
+          </div>
+          <!--          <div class="product__details__pic__slider owl-carousel">-->
+          <!--            <img data-imgbigurl="../../../assets/img/product/details/product-details-2.jpg.jpg"-->
+          <!--                 src="../../../assets/img/product/details/thumb-1.jpg" alt="">-->
+          <!--            <img data-imgbigurl="../../../assets/img/product/details/product-details-3.jpg.jpg"-->
+          <!--                 src="../../../assets/img/product/details/thumb-2.jpg" alt="">-->
+          <!--            <img data-imgbigurl="../../../assets/img/product/details/product-details-5.jpg.jpg"-->
+          <!--                 src="../../../assets/img/product/details/thumb-3.jpg" alt="">-->
+          <!--            <img data-imgbigurl="../../../assets/img/product/details/product-details-4.jpg"-->
+          <!--                 src="../../../assets/img/product/details/thumb-4.jpg" alt="">-->
+          <!--          </div>-->
+        </div>
+      </div>
+
+      <div class="col-lg-6 col-md-6">
+        <div class="product__details__text">
+          <h3 style="margin-bottom: 5px">{{shoe.name | titlecase}}</h3>
+
+          <div class="product__details__rating" style="margin-bottom: 5px">
+            <i class="fa fa-star mr-1"></i>
+            <i class="fa fa-star mr-1"></i>
+            <i class="fa fa-star mr-1"></i>
+            <i class="fa fa-star mr-1"></i>
+            <i class="fa fa-star-half-o mr-2"></i>
+            <span style="font-size: 15px">(đã bán {{quantitySellByShoe}} / còn lại {{shoe.sumQuantity}})</span>
+          </div>
+
+          <div class="product__details__price" style="margin-bottom: 10px">
+            {{shoe.price * (1 - shoe.discount / 100) | currency: "VND"}}
+            <del *ngIf="shoe.discount > 0" class="text-secondary ml-2"
+                 style="font-size: 25px"> {{shoe.price | currency: "VND"}}</del>
+          </div>
+
+          <p style="margin-bottom: 10px; line-height: 22px">{{shoe.describes}}</p>
+          <p style="margin-bottom: 5px; color: red;">Tối đa 3 sản phẩm / 1 size / 1 lần chọn.</p>
+
+          <div class="sidebar__item__size" *ngFor="let item of shoeSizeList; index as i">
+            <label class="hover-gray" *ngIf="shoeSizeIdChoose != item.id"
+                   style="padding: 3px 10px; margin-bottom: 17px; border: 1px solid lightgray">{{item.size}}
+              <input type="radio" (click)="chooseShoeSize(item.id)"/>
+            </label>
+
+            <label
+              style="pointer-events: none; background-color: #bababa; color: white; padding: 3px 10px;
+              margin-bottom: 17px; border: 1px solid gray" *ngIf="shoeSizeIdChoose == item.id">{{item.size}}
+              <input type="radio"/>
+            </label>
+          </div>
+          <br>
+
+          <a class="heart-icon hover-gray" (click)="descQuantity()" *ngIf="quantityChoose > 1">
+            <i class="fa fa-minus" aria-hidden="true"></i></a>
+          <a class="heart-icon" style="cursor: no-drop" *ngIf="quantityChoose <= 1">
+            <i class="fa fa-minus" aria-hidden="true"></i></a>
+
+          <a class="heart-icon" style="background-color: white">{{quantityChoose}}</a>
+
+          <a class="heart-icon hover-gray" (click)="ascQuantity()" *ngIf="quantityChoose < 3">
+            <i class="fa fa-plus" aria-hidden="true"></i></a>
+          <a class="heart-icon" style="cursor: no-drop" *ngIf="quantityChoose >= 3">
+            <i class="fa fa-plus" aria-hidden="true"></i></a>
+
+          <a class="primary-btn hover-green ml-2" *ngIf="shoeSizeIdChoose > 0" (click)="addToCart()">
+            Thêm vào giỏ hàng</a>
+          <a class="primary-btn ml-2" style="cursor: no-drop; background-color: mediumseagreen; color: white"
+             *ngIf="shoeSizeIdChoose == 0">Chọn SIZE giày <i class="fa fa-hand-o-up" aria-hidden="true"></i></a>
+
+          <ul style="margin-top: 10px; margin-bottom: 5px">
+            <li><b>Hãng sản xuất:</b> <span>{{shoe.manufacturer | titlecase}}</span></li>
+            <li><b>Loại sản phẩm:</b> <span>{{shoe.type}}</span></li>
+            <li><b>Giao hàng:</b> <span>Từ 02-03 ngày.
+              <samp class="pl-1"> Miễn phí giao hàng toàn quốc</samp></span></li>
+            <li><b>Chia sẻ:</b>
+              <div class="share">
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-instagram"></i></a>
+                <a href="#"><i class="fa fa-pinterest"></i></a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-lg-12">
+        <div class="product__details__tab">
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
+                 aria-selected="true">Giới thiệu</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
+                 aria-selected="false">Công dụng</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
+                 aria-selected="false">Văn hóa</a>
+            </li>
+          </ul>
+          <div class="tab-content" style="text-align: justify">
+            <div class="tab-pane active" id="tabs-1" role="tabpanel">
+              <div class="product__details__tab__desc">
+                <h6>Giới thiệu</h6>
+                <p>
+                  Đặc tính của giày thể thao bao gồm đề mềm, thích hợp cho động tác chạy, và khả năng hấp tác động. Với
+                  nền công nghiệp sản xuất và thiết kế phát triển và mở rộng, thuật ngữ "giày thể thao" thường được xác
+                  định bởi thiết kế của đế giày hơn là thiết kế của phần trên giày. Đa số các mẫu giày hiện tại, phần
+                  trên của giày không có chức năng phục vụ nhu cầu hoạt động thể thao mà chỉ có chức năng thẩm mỹ.
+                </p>
+                <p>
+                  Giày thể thao thường được làm bằng những hợp chất linh hoạt và bền, đế giày thường được làm bằng cao
+                  su đặc. Tuy nhiên một số mẫu giày mới có khoang để chứa gel hoặc không khí để tăng khả năng đàn hồi và
+                  hấp thụ lực của đế giày. Các thiết kế ban đầu thường rất đơn giản, nhưng được thiết kế để tạo dấu ấn
+                  dành riêng cho môn thể thao mà đôi giày phục vụ, ví dụ như hai bên lưới dành cho giày chạy marathon.
+                  Giày thể thao thường có cỡ to và không gian dành cho ngón chân to hơn các đôi giày thường vì rất nhiều
+                  vận động viên có kích thước bàn chân lớn.
+                </p>
+                <p>
+                  Có khá nhiều loại giày dành cho các môn thể thao và mục đích vận động khác nhau: giày chạy trên địa
+                  hình phẳng, giày chạy đồi núi, giày leo núi, giày vật, giày bóng đá, giày nhảy thể thao, giày tennis,
+                  giày đi bộ, sneaker,...
+                </p>
+              </div>
+            </div>
+            <div class="tab-pane" id="tabs-2" role="tabpanel">
+              <div class="product__details__tab__desc">
+                <h6>Công dụng</h6>
+                <p>
+                  Từ "giày điền kinh" chủ yếu được dùng với những đôi giày dành cho bộ môn chạy marathon hoặc bán
+                  marathon, bóng rổ, và quần vợt, nhưng sau đó cũng xuất hiện những đôi giày dùng cho các môn thể thao
+                  trên sân cỏ như bóng đá và bóng rugby, những đôi giày đó thường có lớp đinh bên dưới đế.
+                </p>
+                <p>
+                  Tính năng chủ yếu của các đôi giày điền kinh đó là chúng có phần đế linh hoạt, thích hợp để bước đi và
+                  hấp thụ lực của vận động viên. Khi ngành công nghiệp giày ngày càng mở rộng, những loại giày được cho
+                  là "giày điền kinh" sẽ được đánh giá dựa vào phần bên dưới của đôi giày thay vì phần bên trên.
+                </p>
+                <p>
+                  Những đôi giày được thiết kế từ những vật liệu rất linh hoạt, tiêu biểu là dòng giày có đế làm từ cao
+                  su đặc. Ban đầu những đôi giày cổ điển có thiết kế rất đơn giản, tuy vậy hiện nay các nhà sản xuất đã
+                  đưa ra nhiều mẫu giày hơn để phục vụ cho nhiều mục đích khác nhau. Một ví dụ tiêu biểu là loại giày
+                  đinh để giúp cho việc chạy tốt hơn. Các đôi giày thể thao ngày càng được phát triển đa dạng hơn về
+                  kích cỡ, hỗ trợ tốt cho cả các vận động viên có hình dáng bàn chân khác biệt.
+                </p>
+              </div>
+            </div>
+            <div class="tab-pane" id="tabs-3" role="tabpanel">
+              <div class="product__details__tab__desc">
+                <h6>Văn hóa</h6>
+                <p>
+                  Sneaker dần trở thành một phần quan trọng của văn hóa hip hop (chủ yếu với Pumas, Nike và Adidas) và
+                  rock 'n roll (Converse, Macbeth) kể từ thập niên 1970. Các nghệ sĩ hip hop đã ký những bản hợp đồng
+                  hàng triệu đô la Mỹ với các thương hiệu tên tuổi như Nike, Adidas và Puma để quảng bá hình ảnh những
+                  đôi giày này.[cần dẫn nguồn] Những người chuyên sưu tầm sneaker, còn được gọi với cái tên
+                  "sneakerhead", sử dụng sneaker như một loại phụ kiện thời trang. Những đôi giày sneaker cách điệu với
+                  thiết kế đẹp có thể được bán với giá $1000 tại các gian hàng trưng bày tại Saks Fifth Avenue. Vào năm
+                  2005, một bộ phim phóng sự tên là Just for Kicks đã nói về hiện tượng sneaker và lịch sử hình thành
+                  của chúng.
+                </p>
+                <p>
+                  Sneakerhead được hiểu là một người chuyên sưu tầm, trao đổi hoặc bày tỏ sự ngưỡng mộ dành cho sneaker
+                  như là một sở thích.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

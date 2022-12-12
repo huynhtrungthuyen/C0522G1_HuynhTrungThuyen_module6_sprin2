@@ -1,0 +1,10 @@
+.hover-underline:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.hover-gray:hover {
+  background-color: #c7c7c7;
+  color: black;
+  cursor: pointer;
+}
