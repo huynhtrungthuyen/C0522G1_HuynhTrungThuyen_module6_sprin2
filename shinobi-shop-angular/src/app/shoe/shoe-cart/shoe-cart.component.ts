@@ -3,6 +3,9 @@ import {ShoeService} from "../../service/shoe.service";
 import {ICart} from "../../model/i-cart";
 import Swal from 'sweetalert2';
 import {Router} from "@angular/router";
+import {Title} from "@angular/platform-browser";
+import {TokenStorageService} from "../../service/token-storage.service";
+import {render} from "creditcardpayments/creditCardPayments";
 
 @Component({
   selector: 'app-shoe-cart',
@@ -13,61 +16,86 @@ export class ShoeCartComponent implements OnInit {
   cart: ICart[];
   totalPrice = 0;
   finalPrice = 0;
+  username: string;
+  roles: string[] = [];
+  isCustomer = false;
+  isAdmin = false;
+  isEmployee = false;
+  pay = "none";
+  money = '0';
 
   constructor(private shoeService: ShoeService,
-              private router: Router) {
+              private router: Router,
+              private tokenService: TokenStorageService,
+              private title: Title) {
+    title.setTitle('Giỏ hàng');
+
   }
 
   ngOnInit(): void {
-    this.getCustomer();
-    this.getEmployee();
+    this.username = '';
+    this.showUsername();
   }
 
-  getCustomer(): void {
-    this.shoeService.findCustomer().subscribe(customer => {
-        if (customer != null) {
-          this.shoeService.findCartByUser(customer.id).subscribe(value => {
-              this.cart = value;
+  showUsername() {
+    this.username = this.tokenService.getUser().username;
+    console.log(this.username);
+    this.roles = this.tokenService.getUser().roles;
+    this.isCustomer = this.roles.indexOf('ROLE_CUSTOMER') !== -1;
+    this.isEmployee = this.roles.indexOf('ROLE_EMPLOYEE') !== -1;
+    this.isAdmin = this.roles.indexOf('ROLE_ADMIN') !== -1;
 
-              for (let item of value) {
-                this.totalPrice += item.price * item.quantity;
-                this.finalPrice += item.price * (1 - item.discount / 100) * item.quantity;
-              }
-            },
-            error => {
-              console.log(error);
-            });
-        }
-      },
-      error => {
-        console.log(error);
-      });
-  }
+    if (this.username !== '') {
+      this.shoeService.findCustomer(this.username).subscribe(customer => {
+          if (customer != null) {
+            this.shoeService.findCartByUser(customer.id).subscribe(value => {
+                this.cart = value;
 
-  getEmployee(): void {
-    this.shoeService.findEmployee().subscribe(employee => {
-        if (employee != null) {
-          this.shoeService.findCartByUser(employee.id).subscribe(value => {
-              this.cart = value;
+                for (let item of value) {
+                  this.totalPrice += item.price * item.quantity;
+                  this.finalPrice += item.price * (1 - item.discount / 100) * item.quantity;
+                }
+                console.log(Math.round(this.finalPrice / 23000 * 100) / 100);
+                render(
+                  {
+                    id: '#myPaypal',
+                    value: '' + Math.round(this.finalPrice / 23000 * 100) / 100,
+                    currency: 'USD',
+                    onApprove: (details) => {
+                      const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                          toast.addEventListener('mouseenter', Swal.stopTimer)
+                          toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                      })
 
-              for (let item of value) {
-                this.totalPrice += item.price * item.quantity;
-                this.finalPrice += item.price * (1 - item.discount / 100) * item.quantity;
-              }
-            },
-            error => {
-              console.log(error);
-            });
-        }
-      },
-      error => {
-        console.log(error);
-      });
+                      Toast.fire({
+                        icon: 'success',
+                        title: 'Thanh toán thành công!'
+                      })
+                    }
+                  }
+                );
+              },
+              error => {
+                console.log(error);
+              });
+          }
+        },
+        error => {
+          console.log(error);
+        });
+    }
   }
 
   descQuantity(id: number): void {
     this.shoeService.descQuantityCart(id).subscribe(() => {
-      location.reload();
+      window.location.reload();
     }, error => {
       console.log(error);
     });
@@ -75,7 +103,7 @@ export class ShoeCartComponent implements OnInit {
 
   ascQuantity(id: number): void {
     this.shoeService.ascQuantityCart(id).subscribe(() => {
-      location.reload();
+      window.location.reload();
     }, error => {
       console.log(error);
     });
@@ -98,7 +126,7 @@ export class ShoeCartComponent implements OnInit {
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
-            timer: 1500,
+            timer: 2000,
             timerProgressBar: true,
             didOpen: (toast) => {
               toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -111,7 +139,7 @@ export class ShoeCartComponent implements OnInit {
             title: 'Xóa khỏi giỏ hàng thành công!'
           })
 
-          location.reload();
+          window.location.reload();
         }, error => {
           console.log(error);
         });
@@ -120,21 +148,6 @@ export class ShoeCartComponent implements OnInit {
   }
 
   updateCart() {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-      }
-    })
-
-    Toast.fire({
-      icon: 'success',
-      title: 'Cập nhật giỏ hàng thành công!'
-    })
+    this.pay = "block";
   }
 }

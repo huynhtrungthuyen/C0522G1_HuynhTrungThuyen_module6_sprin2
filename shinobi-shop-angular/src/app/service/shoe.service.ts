@@ -41,12 +41,8 @@ export class ShoeService {
     return this.httpClient.get<IShoeSizeDto[]>(API_URL + '/shoe/shoes-size/' + id);
   }
 
-  findCustomer(): Observable<ICustomer> {
-    return this.httpClient.get<ICustomer>(API_URL + '/shoe/get-customer');
-  }
-
-  findEmployee(): Observable<IEmployee> {
-    return this.httpClient.get<IEmployee>(API_URL + '/shoe/get-employee');
+  findCustomer(username: string): Observable<ICustomer> {
+    return this.httpClient.get<ICustomer>(API_URL + '/shoe/get-customer/' + username);
   }
 
   addToCart(quantity: number, customerId: number, shoeSizeId: number): Observable<void> {
@@ -75,5 +71,9 @@ export class ShoeService {
 
   sumQuantityCartById(id: number): Observable<number> {
     return this.httpClient.get<number>(API_URL + '/shoe/quantity-cart/' + id);
+  }
+
+  paymentShoe(id: number): Observable<void> {
+    return this.httpClient.get<void>(API_URL + '/shoe/payment-shoe/' + id);
   }
 }

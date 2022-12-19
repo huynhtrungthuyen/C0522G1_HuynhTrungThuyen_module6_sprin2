@@ -1,3 +1,4 @@
+<app-header></app-header>
 <section class="product-details spad" *ngIf="shoe != undefined">
   <div class="container">
     <div class="row">
@@ -56,6 +57,7 @@
           </div>
           <br>
 
+          <!--          <div class="product__discount__slider">-->
           <a class="heart-icon hover-gray" (click)="descQuantity()" *ngIf="quantityChoose > 1">
             <i class="fa fa-minus" aria-hidden="true"></i></a>
           <a class="heart-icon" style="cursor: no-drop" *ngIf="quantityChoose <= 1">
@@ -72,6 +74,7 @@
             Thêm vào giỏ hàng</a>
           <a class="primary-btn ml-2" style="cursor: no-drop; background-color: mediumseagreen; color: white"
              *ngIf="shoeSizeIdChoose == 0">Chọn SIZE giày <i class="fa fa-hand-o-up" aria-hidden="true"></i></a>
+          <!--          </div>-->
 
           <ul style="margin-top: 10px; margin-bottom: 5px">
             <li><b>Hãng sản xuất:</b> <span>{{shoe.manufacturer | titlecase}}</span></li>
@@ -178,3 +181,5 @@
     </div>
   </div>
 </section>
+
+<app-footer></app-footer>

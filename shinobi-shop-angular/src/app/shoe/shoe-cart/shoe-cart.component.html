@@ -1,3 +1,4 @@
+<app-header></app-header>
 <!-- Shoping Cart Section Begin -->
 <section class="shoping-cart spad">
   <div class="container">
@@ -59,7 +60,7 @@
           <a routerLink="/" class="primary-btn cart-btn hover-gray" style="border: 1px solid lightgray">TIẾP TỤC MUA
             SẮM</a>
           <a class="primary-btn cart-btn cart-btn-right hover-gray" style="border: 1px solid lightgray"
-             (click)="updateCart()"><span class="icon_loading"></span> Cập nhật giỏ hàng</a>
+             (click)="updateCart()"><span class="icon_loading"></span> TIẾN HÀNH THANH TOÁN</a>
         </div>
       </div>
       <div class="col-lg-6">
@@ -67,7 +68,7 @@
           <div class="shoping__discount">
             <h5>Mã giảm giá</h5>
             <div class="form__input">
-              <input type="text" placeholder="   Nhập mã giảm giá của bạn.." style="height: 45px; width: 40%;
+              <input type="text" placeholder="   Nhập mã giảm giá của bạn.." style="height: 45px; width: 50%;
               text-align: center"/>
               <button type="submit" class="site-btn hover-green">ÁP DỤNG</button>
             </div>
@@ -75,16 +76,18 @@
         </div>
       </div>
       <div class="col-lg-6">
-        <div class="shoping__checkout" style="border: 1px solid lightgray ">
+        <div class="shoping__checkout" style="border: 1px solid lightgray">
           <h5>Thanh toán giỏ hàng</h5>
           <ul>
             <li>Giá gốc: <span>{{totalPrice | currency: "VND"}}</span></li>
             <li>Tổng: <span>{{finalPrice | currency: "VND"}}</span></li>
           </ul>
-          <a class="primary-btn hover-green">TIẾN HÀNH THANH TOÁN</a>
+          <div id="myPaypal" style="display: {{pay}}"></div>
+<!--          <a class="primary-btn hover-green" style="display: {{pay}}">TIẾN HÀNH THANH TOÁN</a>-->
         </div>
       </div>
     </div>
   </div>
 </section>
 <!-- Shoping Cart Section End -->
+<app-footer></app-footer>

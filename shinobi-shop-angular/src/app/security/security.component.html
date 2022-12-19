@@ -1,0 +1,86 @@
+<div class="limiter" style="background-image:
+url('https://www.pixelstalk.net/wp-content/uploads/images6/Cool-Shoe-Backgrounds-for-Desktop.jpg');
+background-size: cover;">
+  <div class="container-login100" style="color: black; font-family: Calibri, Arial, sans-serif">
+    <div class="wrap-login100 p-l-20 p-r-20 p-t-5 p-b-30" style="color: black; border: 1px solid lightgray;
+                   box-shadow:15px 15px 15px black">
+      <div class="row">
+        <div class="col-lg-5">
+          <a routerLink="/"><img class="img-fluid w-50" src="../../assets/shinobi.png" alt=""></a>
+        </div>
+        <div class="col-lg-7">
+        </div>
+      </div>
+      <div class="text-center py-3">
+        <span style="font-size: 45px; font-weight: bolder">ĐĂNG NHẬP</span>
+      </div>
+      <form class="login100-form validate-form" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+
+        <div class="wrap-input100 validate-input m-b-23" data-validate="Username is required">
+          <label class="label-input100"><strong>Tên đăng nhập:</strong>
+            <span class="text-danger" *ngIf="formGroup.controls.username.hasError('required')
+                  && formGroup.controls.username.dirty">
+            Vui lòng nhập tài khoản !</span></label>
+          <input class="input100" type="text" formControlName="username">
+          <span class="focus-input100" data-symbol="@"></span>
+        </div>
+
+
+        <div class="wrap-input100 validate-input" data-validate="Password is required">
+          <label class="label-input100"><strong>Mật khẩu:</strong>
+            <span class="text-danger" *ngIf="formGroup.controls.password.hasError('required')
+                  && formGroup.controls.password.dirty">
+            Vui lòng nhập mật khẩu !</span></label>
+          <input class="input100 fa fa-unlock-alt" type="password" formControlName="password">
+          <span class="focus-input100" data-symbol="&#9919;"></span>
+        </div>
+
+
+        <div class="p-b-10 p-t-10" style="font-size: 18px">
+          <label>
+            <input style="background: #1da1f2" type="checkbox" checked="checked" name="remember"> Lưu mật khẩu
+          </label><br>
+        </div>
+
+        <div class="text-center mb-2">
+          <a href="#">
+            <span class="the-a" style="font-size: 18px">Quên mật khẩu?</span>
+          </a>
+        </div>
+
+        <div class="p-b-30 text-center" style="font-size: 18px">
+          <span style="font-size: 18px">Bạn chưa có tài khoản?</span>
+          <a href="#">
+            <span class="the-a" style="font-size: 18px">  Đăng ký?</span>
+          </a>
+        </div>
+
+        <button class="gmail-btn hover-gray rounded" style="text-transform:none; margin-bottom: 20px;
+        font-family: Calibri, Arial, sans-serif">
+          <span style="font-size: 20px">Đăng nhập </span>
+        </button>
+      </form>
+      <!--      <div class="txt1 text-center p-t-10 p-b-10">-->
+      <!--						<span>-->
+      <!--							Hoặc-->
+      <!--						</span>-->
+      <!--      </div>-->
+
+      <!--      <a (click)="signInWithGoogle()">-->
+      <!--        <button class="gmail-btn"-->
+      <!--                style="text-transform:none;border-radius: 30px; margin-bottom: 5%" type="button">-->
+      <!--          <img width="20px" alt="Google sign-in"-->
+      <!--               src="https://cdn-icons-png.flaticon.com/512/2504/2504739.png"/>-->
+      <!--          <span style="font-size: 20px;margin-left: 2%">Đăng nhập Gmail</span>-->
+      <!--        </button>-->
+      <!--      </a>-->
+
+      <button class="thoat-btn rounded hover-gray" (click)="whenExit()"
+              style="text-transform:none; font-family: Calibri, Arial, sans-serif">
+        <span style="font-size: 20px">Thoát</span>
+      </button>
+
+    </div>
+  </div>
+</div>
+

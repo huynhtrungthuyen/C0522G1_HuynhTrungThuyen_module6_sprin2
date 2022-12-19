@@ -46,11 +46,11 @@ public class ShoeController {
     @GetMapping("/list-newest/{nameS}&{manufacturerS}&{typeS}&{priceStart}&{priceEnd}")
     public ResponseEntity<Page<IShoeDto>> showListShoeNewest(@PageableDefault(value = 6,
             sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                                                       @PathVariable("nameS") String nameS,
-                                                       @PathVariable("manufacturerS") String manufacturerS,
-                                                       @PathVariable("typeS") String typeS,
-                                                       @PathVariable("priceStart") Integer priceStart,
-                                                       @PathVariable("priceEnd") Integer priceEnd) {
+                                                             @PathVariable("nameS") String nameS,
+                                                             @PathVariable("manufacturerS") String manufacturerS,
+                                                             @PathVariable("typeS") String typeS,
+                                                             @PathVariable("priceStart") Integer priceStart,
+                                                             @PathVariable("priceEnd") Integer priceEnd) {
         Page<IShoeDto> shoeList = iShoeService.showListShoe(nameS, manufacturerS, typeS, priceStart, priceEnd, pageable);
         return new ResponseEntity<>(shoeList, HttpStatus.OK);
     }
@@ -58,18 +58,6 @@ public class ShoeController {
     @GetMapping("/list-price-desc/{nameS}&{manufacturerS}&{typeS}&{priceStart}&{priceEnd}")
     public ResponseEntity<Page<IShoeDto>> showListShoePriceDesc(@PageableDefault(value = 6,
             sort = "price", direction = Sort.Direction.DESC) Pageable pageable,
-                                                       @PathVariable("nameS") String nameS,
-                                                       @PathVariable("manufacturerS") String manufacturerS,
-                                                       @PathVariable("typeS") String typeS,
-                                                       @PathVariable("priceStart") Integer priceStart,
-                                                       @PathVariable("priceEnd") Integer priceEnd) {
-        Page<IShoeDto> shoeList = iShoeService.showListShoe(nameS, manufacturerS, typeS, priceStart, priceEnd, pageable);
-        return new ResponseEntity<>(shoeList, HttpStatus.OK);
-    }
-
-    @GetMapping("/list-price-asc/{nameS}&{manufacturerS}&{typeS}&{priceStart}&{priceEnd}")
-    public ResponseEntity<Page<IShoeDto>> showListShoePriceAsc(@PageableDefault(value = 6,
-            sort = "price", direction = Sort.Direction.ASC) Pageable pageable,
                                                                 @PathVariable("nameS") String nameS,
                                                                 @PathVariable("manufacturerS") String manufacturerS,
                                                                 @PathVariable("typeS") String typeS,
@@ -79,14 +67,26 @@ public class ShoeController {
         return new ResponseEntity<>(shoeList, HttpStatus.OK);
     }
 
-    @GetMapping("/list-sale/{nameS}&{manufacturerS}&{typeS}&{priceStart}&{priceEnd}")
-    public ResponseEntity<Page<IShoeDto>> showListShoeSale(@PageableDefault(value = 6,
-            sort = "discount", direction = Sort.Direction.DESC) Pageable pageable,
+    @GetMapping("/list-price-asc/{nameS}&{manufacturerS}&{typeS}&{priceStart}&{priceEnd}")
+    public ResponseEntity<Page<IShoeDto>> showListShoePriceAsc(@PageableDefault(value = 6,
+            sort = "price", direction = Sort.Direction.ASC) Pageable pageable,
                                                                @PathVariable("nameS") String nameS,
                                                                @PathVariable("manufacturerS") String manufacturerS,
                                                                @PathVariable("typeS") String typeS,
                                                                @PathVariable("priceStart") Integer priceStart,
                                                                @PathVariable("priceEnd") Integer priceEnd) {
+        Page<IShoeDto> shoeList = iShoeService.showListShoe(nameS, manufacturerS, typeS, priceStart, priceEnd, pageable);
+        return new ResponseEntity<>(shoeList, HttpStatus.OK);
+    }
+
+    @GetMapping("/list-sale/{nameS}&{manufacturerS}&{typeS}&{priceStart}&{priceEnd}")
+    public ResponseEntity<Page<IShoeDto>> showListShoeSale(@PageableDefault(value = 6,
+            sort = "discount", direction = Sort.Direction.DESC) Pageable pageable,
+                                                           @PathVariable("nameS") String nameS,
+                                                           @PathVariable("manufacturerS") String manufacturerS,
+                                                           @PathVariable("typeS") String typeS,
+                                                           @PathVariable("priceStart") Integer priceStart,
+                                                           @PathVariable("priceEnd") Integer priceEnd) {
         Page<IShoeDto> shoeList = iShoeService.showListShoe(nameS, manufacturerS, typeS, priceStart, priceEnd, pageable);
         return new ResponseEntity<>(shoeList, HttpStatus.OK);
     }

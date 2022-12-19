@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ShoeService} from "../../service/shoe.service";
 import {IShoeDto} from "../../model/i-shoe-dto";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -6,6 +6,8 @@ import {IShoeSizeDto} from "../../model/i-shoe-size-dto";
 import {ICustomer} from "../../model/i-customer";
 import {IEmployee} from "../../model/i-employee";
 import Swal from 'sweetalert2';
+import {TokenStorageService} from "../../service/token-storage.service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-shoe-detail',
@@ -18,14 +20,21 @@ export class ShoeDetailComponent implements OnInit {
   quantityChoose = 1;
   shoeSizeList: IShoeSizeDto[];
   shoeSizeIdChoose = 0;
-  customer: ICustomer;
-  employee: IEmployee;
   idUser: number;
   quantitySellByShoe = 0;
+  username: string;
+  roles: string[] = [];
+  isCustomer = false;
+  isAdmin = false;
+  isEmployee = false;
 
   constructor(private shoeService: ShoeService,
               private activatedRoute: ActivatedRoute,
-              private router: Router) { }
+              private tokenService: TokenStorageService,
+              private router: Router,
+              private title: Title) {
+    title.setTitle('Thông tin giày');
+  }
 
   ngOnInit(): void {
     this.id = Number(this.activatedRoute.snapshot.params.id);
@@ -34,8 +43,8 @@ export class ShoeDetailComponent implements OnInit {
     this.getShoeById();
     this.getQuantitySellByShoe();
 
-    this.getCustomer();
-    this.getEmployee();
+    this.username = '';
+    this.showUsername();
   }
 
   getShoeById(): void {
@@ -78,30 +87,25 @@ export class ShoeDetailComponent implements OnInit {
     this.shoeSizeIdChoose = id;
   }
 
-  getCustomer(): void {
-    this.shoeService.findCustomer().subscribe(value => {
-        this.customer = value;
+  showUsername() {
+    this.username = this.tokenService.getUser().username;
+    console.log(this.username);
+    this.roles = this.tokenService.getUser().roles;
+    this.isCustomer = this.roles.indexOf('ROLE_CUSTOMER') !== -1;
+    this.isEmployee = this.roles.indexOf('ROLE_EMPLOYEE') !== -1;
+    this.isAdmin = this.roles.indexOf('ROLE_ADMIN') !== -1;
 
-        if (this.customer != null) {
-          this.idUser = this.customer.id;
-        }
-      },
-      error => {
-        console.log(error);
-      });
-  }
-
-  getEmployee(): void {
-    this.shoeService.findEmployee().subscribe(value => {
-        this.employee = value;
-
-        if (this.employee != null) {
-          this.idUser = this.employee.id;
-        }
-      },
-      error => {
-        console.log(error);
-      });
+    if (this.username !== '') {
+      this.shoeService.findCustomer(this.username).subscribe(customer => {
+          if (customer != null) {
+            this.idUser = customer.id;
+            console.log(this.idUser)
+          }
+        },
+        error => {
+          console.log(error);
+        });
+    }
   }
 
   addToCart(): void {
@@ -110,7 +114,7 @@ export class ShoeDetailComponent implements OnInit {
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
-        timer: 2000,
+        timer: 1000,
         timerProgressBar: true,
         didOpen: (toast) => {
           toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -121,9 +125,9 @@ export class ShoeDetailComponent implements OnInit {
       Toast.fire({
         icon: 'success',
         title: 'Thêm vào giỏ hàng thành công!'
-      })
+      }).then(r => location.replace('cart'))
 
-      this.router.navigateByUrl("cart");
+      // this.router.navigateByUrl("cart");
     }, error => {
       console.log(error);
     });

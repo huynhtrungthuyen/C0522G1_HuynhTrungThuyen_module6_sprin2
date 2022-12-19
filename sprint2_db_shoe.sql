@@ -112,4 +112,6 @@ create table if not exists order_detail(
 -- select sum(order_detail.quantity) from order_detail join shoe_size on shoe_size.id = order_detail.shoe_size_id join shoe on shoe.id = shoe_size.shoe_id where order_detail.is_pay = 1 and shoe.id = 1;
 -- select order_detail.id as id, shoe.name as name, size.name as size, shoe.price as price, shoe.discount as discount, order_detail.quantity as quantity from order_detail join shoe_size on shoe_size.id = order_detail.shoe_size_id join shoe on shoe.id = shoe_size.shoe_id join size on size.id = shoe_size.size_id where order_detail.is_pay = 0 and order_detail.is_delete = 0 and order_detail.customer_id = 15;
 -- update order_detail set quantity = (quantity + 1) where is_pay = 0 and id = 1011;
-select * from order_detail where is_pay = 0 and customer_id = 15
+-- select sum(quantity) as sumQuantityCart from order_detail where is_pay = 0 and customer_id = 15;
+update order_detail set date_payment = now(), is_pay = 1 where is_pay = 0 and customer_id = 2;
+select * from order_detail where customer_id = 2;

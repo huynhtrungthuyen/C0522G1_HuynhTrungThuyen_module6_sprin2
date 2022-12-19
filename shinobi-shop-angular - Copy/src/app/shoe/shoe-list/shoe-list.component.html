@@ -1,0 +1,191 @@
+<section class="product spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-5">
+        <div class="sidebar">
+          <div class="sidebar__item mt-1 mb-5">
+            <h4>Tên sản phẩm</h4>
+            <div class="form__input mb-3">
+              <input type="text" placeholder="   Nhập tên giày.." style="height: 45px; width: 60%; text-align: center"
+                     [(ngModel)]="nameS"/>
+              <button type="submit" class="site-btn hover-green bg-info" (click)="getPage1()">
+                <i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+
+            <div class="sidebar__item__size">
+              <label for="name" class="hover-gray" style="border: 1px solid lightgray">
+                Tất cả tên sản phẩm
+                <input type="radio" id="name" (click)="cleanInput()"/>
+              </label>
+            </div>
+          </div>
+
+          <div class="sidebar__item">
+            <h4>Loại giày</h4>
+            <ul>
+              <li><a class="hover-underline" (click)="searchType('Nam')" *ngIf="typeS != 'Nam'"
+                     style="font-size: 18px; color: blue">Nam
+                <i class="fa fa-mars" aria-hidden="true"></i></a></li>
+              <li><a class="hover-underline" *ngIf="typeS == 'Nam'"
+                     style="font-size: 18px; color: blue; text-decoration: underline">Nam
+                <i class="fa fa-mars" aria-hidden="true"></i></a></li>
+
+              <li><a class="hover-underline" (click)="searchType('Nữ')" *ngIf="typeS != 'Nữ'"
+                     style="font-size: 18px; color: deeppink">Nữ
+                <i class="fa fa-venus" aria-hidden="true"></i></a></li>
+              <li><a class="hover-underline" *ngIf="typeS == 'Nữ'"
+                     style="font-size: 18px; color: deeppink; text-decoration: underline">Nữ
+                <i class="fa fa-venus" aria-hidden="true"></i></a></li>
+
+              <li><a class="hover-underline" (click)="searchType('Trẻ em')" *ngIf="typeS != 'Trẻ em'"
+                     style="font-size: 18px; color: lightseagreen">Trẻ em
+                <i class="fa fa-child" aria-hidden="true"></i></a></li>
+              <li><a class="hover-underline" *ngIf="typeS == 'Trẻ em'"
+                     style="font-size: 18px; color: lightseagreen; text-decoration: underline">Trẻ em
+                <i class="fa fa-child" aria-hidden="true"></i></a></li>
+
+              <li><a class="hover-underline" (click)="searchType('')"
+                     style="font-size: 18px">Tất cả loại giày</a></li>
+            </ul>
+          </div>
+
+          <div class="sidebar__item">
+            <h4>Giá</h4>
+            <div class="input-group mb-3 w-75">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Min:</span>
+              </div>
+              <input type="text" class="form-control" [(ngModel)]="priceStart" (change)="getPage1()"/>
+              <div class="input-group-append">
+                <span class="input-group-text">(₫)</span>
+              </div>
+            </div>
+
+            <div class="input-group mb-3 w-75">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Max:</span>
+              </div>
+              <input type="text" class="form-control" [(ngModel)]="priceEnd" (change)="getPage1()"/>
+              <div class="input-group-append">
+                <span class="input-group-text">(₫)</span>
+              </div>
+            </div>
+
+            <div class="sidebar__item__size">
+              <label for="allPrice" class="hover-gray" style="border: 1px solid lightgray">
+                Tất cả giá thành
+                <input type="radio" id="allPrice" (click)="searchAllPrice()"/>
+              </label>
+            </div>
+          </div>
+
+          <div class="sidebar__item">
+            <h4>Hãng sản xuất</h4>
+            <div class="sidebar__item__size" *ngFor="let item of (manufacturer$ | async)!; index as i">
+              <label class="hover-gray" *ngIf="manufacturerS != item" style="border: 1px solid lightgray">
+                {{item | titlecase}}
+                <input type="radio" (click)="searchManufacturer(item)"/>
+              </label>
+
+              <label style="pointer-events: none; background-color: #c7c7c7; color: white"
+                     *ngIf="manufacturerS == item">{{item | titlecase}}
+                <input type="radio"/>
+              </label>
+            </div>
+            <div class="sidebar__item__size">
+              <label for="all" class="hover-gray" style="border: 1px solid lightgray">
+                Tất cả hãng sản xuất
+                <input type="radio" id="all" (click)="searchManufacturer('')"/>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-7">
+        <div class="product__discount mb-0">
+          <div class="section-title product__discount__title">
+            <h2>DANH SÁCH SẢN PHẨM</h2>
+          </div>
+        </div>
+
+        <div class="filter__item">
+          <div class="row">
+            <div class="col-lg-4 col-md-5">
+              <div class="filter__sort">
+                <span class="mr-2">Sắp xếp theo: </span>
+                <span>
+                <select class="custom-select" [(ngModel)]="sortBy" (change)="getPage1()">
+                  <option value="newest">Mới nhất</option>
+                  <option value="sale">Khuyến mãi</option>
+                  <option value="price-asc">Giá tăng dần</option>
+                  <option value="price-desc">Giá giảm dần</option>
+                </select>
+                </span>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-4">
+              <div class="filter__found">
+                <h6><span>{{quantity}}</span> Sản phẩm</h6>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-3">
+              <div class="filter__option">
+                <span class="icon_grid-2x2"></span>
+                <span class="icon_ul"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6 col-sm-6 mb-5" *ngFor="let item of (shoeList$ | async)!; index as i">
+            <div class="product__discount__item">
+              <div class="product__discount__item__pic set-bg"
+                   style="background-image: url({{item.image}}); border: 1px solid lightgray;
+                   box-shadow:15px 15px 15px lightblue">
+                <div class="product__discount__percent" *ngIf="item.discount > 0">-{{item.discount}}%</div>
+                <ul class="product__item__pic__hover">
+                  <li><a routerLink="/detail/{{item.id}}"><i class="fa fa-eye"></i></a></li>
+                  <li><a routerLink="/detail/{{item.id}}"><i class="fa fa-shopping-cart"></i></a></li>
+                </ul>
+              </div>
+              <div class="product__discount__item__text">
+                <span style="font-size: 16px">{{item.manufacturer | titlecase}}</span>
+                <h5 class="h5">{{item.name | titlecase}}</h5>
+                <div class="product__item__price">{{item.price * (1 - item.discount / 100) | currency: "VND"}}
+                  <span *ngIf="item.discount > 0">{{item.price | currency: "VND"}}</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="product__pagination text-center pl-3">
+            <a (click)="previous()" *ngIf="page > 1"><i class="fa fa-chevron-left"></i></a>
+            <a href="#" style="pointer-events: none; background-color: #c7c7c7; color: white" *ngIf="page <= 1">
+              <i class="fa fa-chevron-left"></i></a>
+
+            <a (click)="getPage1()" *ngIf="page > 1">1</a>
+
+            <a href="#" style="pointer-events: none; background-color: #c7c7c7; color: white" *ngIf="page > 4">...</a>
+
+            <a (click)="getPageP()" *ngIf="page > 3">{{page - 2}}</a>
+            <a (click)="previous()" *ngIf="page > 2">{{page - 1}}</a>
+            <a href="#" style="pointer-events: none; background-color: gray; color: white">{{page}}</a>
+            <a (click)="next()" *ngIf="page < totalPage - 1">{{page + 1}}</a>
+            <a (click)="getPageN()" *ngIf="page < totalPage - 2">{{page + 2}}</a>
+
+            <a href="#" style="pointer-events: none; background-color: #c7c7c7; color: white"
+               *ngIf="page < totalPage - 3">...</a>
+
+            <a (click)="getPageEnd()" *ngIf="page < totalPage">{{totalPage}}</a>
+
+            <a (click)="next()" *ngIf="page < totalPage"><i class="fa fa-chevron-right"></i></a>
+            <a href="#" style="pointer-events: none; background-color: #c7c7c7; color: white" *ngIf="page >= totalPage">
+              <i class="fa fa-chevron-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

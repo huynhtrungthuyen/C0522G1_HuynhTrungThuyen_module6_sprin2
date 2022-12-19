@@ -31,11 +31,11 @@
                 <li><a href="#">English</a></li>
               </ul>
             </div>
-            <div class="header__top__right__auth" *ngIf="user == undefined">
-              <a href="#"><i class="fa fa-user"></i> Đăng nhập</a>
+            <div class="header__top__right__auth" *ngIf="username == ''">
+              <a routerLink="/login"><i class="fa fa-user"></i> Đăng nhập</a>
             </div>
-            <div class="header__top__right__auth" *ngIf="user != undefined">
-              <a href="#"><i class="fa fa-sign-out"></i> Đăng xuất</a>
+            <div class="header__top__right__auth" *ngIf="username != ''">
+              <a (click)="whenLogout()"><i class="fa fa-sign-out"></i> Đăng xuất</a>
             </div>
           </div>
         </div>
@@ -56,7 +56,7 @@
             <li><a routerLink="/">Mua sắm</a></li>
             <li><a href="#">Cá nhân</a>
               <ul class="header__menu__dropdown">
-                <li><a href="#">Giỏ hàng</a></li>
+                <li><a routerLink="/cart">Giỏ hàng</a></li>
                 <li><a href="#">Lịch sử</a></li>
               </ul>
             </li>
@@ -67,20 +67,25 @@
       </div>
       <div class="col-lg-3">
         <div class="header__cart">
-          <ul *ngIf="quantityCart == 0">
-            <li style="transform: scale(1.5)"><a routerLink="/cart"><i class="fa fa-shopping-bag"></i></a></li>
+          <ul *ngIf="quantityCart == 0 && username == ''">
+            <li style="transform: scale(1.5)"><a readonly=""><i class="fa fa-cart-plus"></i></a></li>
           </ul>
 
-          <ul *ngIf="quantityCart > 0 && quantityCart < 100">
+          <ul *ngIf="quantityCart == 0 && username != ''">
+            <li style="transform: scale(1.5)"><a routerLink="/cart"><i class="fa fa-cart-plus"></i></a></li>
+          </ul>
+
+          <ul *ngIf="quantityCart > 0 && quantityCart < 100 && username != ''">
             <li style="transform: scale(1.5)"><a routerLink="/cart"><i class="fa fa-shopping-bag"></i>
               <span style="font-size: 8px">{{quantityCart}}</span></a></li>
           </ul>
 
-          <ul *ngIf="quantityCart > 99">
+          <ul *ngIf="quantityCart > 99 && username != ''">
             <li style="transform: scale(1.5)"><a routerLink="/cart"><i class="fa fa-shopping-bag"></i>
               <span style="font-size: 8px">+99</span></a></li>
           </ul>
-          <div class="header__cart__price ml-2">Hi, <span>{{user.name}}</span></div>
+          <div class="header__cart__price ml-2" *ngIf="username != ''">Chào, <span>{{username}}</span></div>
+          <div class="header__cart__price ml-2" *ngIf="username == ''">Giỏ hàng</div>
         </div>
       </div>
     </div>
