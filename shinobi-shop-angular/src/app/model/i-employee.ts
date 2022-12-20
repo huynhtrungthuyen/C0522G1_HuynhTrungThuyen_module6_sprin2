@@ -9,5 +9,6 @@ export interface IEmployee {
   email?: string;
   address?: string;
   phoneNumber?: string;
+  image?: string;
   user?: IUser;
 }

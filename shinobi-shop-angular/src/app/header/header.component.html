@@ -84,7 +84,8 @@
             <li style="transform: scale(1.5); cursor: pointer"><a (click)="getLoginToCart()">
               <i class="fa fa-shopping-bag"></i><span style="font-size: 8px">+99</span></a></li>
           </ul>
-          <div class="header__cart__price ml-2" *ngIf="username != ''">Chào, <span>{{username}}</span></div>
+          <div class="header__cart__price ml-2" *ngIf="username != ''">Chào,
+            <span routerLink="/info-customer" style="cursor: pointer">{{username}}</span></div>
           <div class="header__cart__price ml-2" *ngIf="username == ''">Giỏ hàng</div>
         </div>
       </div>

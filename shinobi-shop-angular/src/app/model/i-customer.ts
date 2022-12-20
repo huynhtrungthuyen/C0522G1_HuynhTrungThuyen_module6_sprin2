@@ -9,5 +9,6 @@ export interface ICustomer {
   email?: string;
   address?: string;
   phoneNumber?: string;
+  image?: string;
   user?: IUser;
 }

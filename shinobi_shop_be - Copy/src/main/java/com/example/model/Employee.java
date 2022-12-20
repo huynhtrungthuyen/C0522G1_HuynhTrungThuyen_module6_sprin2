@@ -13,6 +13,7 @@ public class Employee {
     private Integer gender;
     private String idCard;
     private String email;
+    private String image;
     private String address;
     private String phoneNumber;
 
@@ -29,6 +30,14 @@ public class Employee {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getName() {
