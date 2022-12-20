@@ -78,4 +78,20 @@ export class HeaderComponent implements OnInit {
     this.isEmployee = false;
     this.isAdmin = false;
   }
+
+  getLoginToCart() {
+    if (this.username === '' || this.username === null || this.username === undefined) {
+      this.router.navigateByUrl('login');
+    } else {
+      this.router.navigateByUrl('cart');
+    }
+  }
+
+  getLoginToHistory() {
+    if (this.username === '' || this.username === null || this.username === undefined) {
+      this.router.navigateByUrl('login');
+    } else {
+      this.router.navigateByUrl('history');
+    }
+  }
 }

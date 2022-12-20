@@ -218,10 +218,16 @@ public class ShoeController {
                 -> new ResponseEntity<>(0, HttpStatus.OK));
     }
 
-
     @GetMapping("/payment-shoe/{customerId}")
     public ResponseEntity<OrderDetail> paymentShoe(@PathVariable("customerId") Integer customerId) {
         iOrderDetailService.paymentShoe(customerId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/history/{id}")
+    public ResponseEntity<Page<IShoeCartDto>> showListShoeNewest(@PageableDefault(value = 3) Pageable pageable,
+                                                             @PathVariable("id") Integer id) {
+        Page<IShoeCartDto> list = iOrderDetailService.findHistoryByUser(id, pageable);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }

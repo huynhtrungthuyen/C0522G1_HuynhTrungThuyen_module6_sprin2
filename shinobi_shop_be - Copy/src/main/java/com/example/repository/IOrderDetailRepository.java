@@ -2,6 +2,8 @@ package com.example.repository;
 
 import com.example.dto.IShoeCartDto;
 import com.example.model.OrderDetail;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -67,4 +69,25 @@ public interface IOrderDetailRepository extends JpaRepository<OrderDetail, Integ
     @Query(value = "update order_detail set date_payment = now(), is_pay = 1 where is_pay = 0 and customer_id = :id",
             nativeQuery = true)
     void paymentShoe(@Param("id") Integer id);
+
+    @Query(value = "select order_detail.id as id, shoe.name as name, size.name as size, shoe.price as price, " +
+            "shoe.discount as discount, order_detail.quantity as quantity, shoe.image as image, " +
+            "order_detail.date_payment as date " +
+            "from order_detail " +
+            "join shoe_size on shoe_size.id = order_detail.shoe_size_id " +
+            "join shoe on shoe.id = shoe_size.shoe_id " +
+            "join size on size.id = shoe_size.size_id " +
+            "where order_detail.is_pay = 1 and order_detail.is_delete = 0 and order_detail.quantity > 0 " +
+            "and order_detail.customer_id = :id " +
+            "order by order_detail.date_payment desc",
+            countQuery = "select count(*) " +
+                    "from order_detail " +
+                    "join shoe_size on shoe_size.id = order_detail.shoe_size_id " +
+                    "join shoe on shoe.id = shoe_size.shoe_id " +
+                    "join size on size.id = shoe_size.size_id " +
+                    "where order_detail.is_pay = 1 and order_detail.is_delete = 0 and order_detail.quantity > 0 " +
+                    "and order_detail.customer_id = :id " +
+                    "order by order_detail.date_payment desc",
+            nativeQuery = true)
+    Page<IShoeCartDto> findHistoryByUser(@Param("id") Integer id, Pageable pageable);
 }

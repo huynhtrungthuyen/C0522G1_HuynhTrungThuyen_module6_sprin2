@@ -22,14 +22,12 @@ export class ShoeCartComponent implements OnInit {
   isAdmin = false;
   isEmployee = false;
   pay = "none";
-  money = '0';
 
   constructor(private shoeService: ShoeService,
               private router: Router,
               private tokenService: TokenStorageService,
               private title: Title) {
     title.setTitle('Giỏ hàng');
-
   }
 
   ngOnInit(): void {
@@ -62,22 +60,27 @@ export class ShoeCartComponent implements OnInit {
                     value: '' + Math.round(this.finalPrice / 23000 * 100) / 100,
                     currency: 'USD',
                     onApprove: (details) => {
-                      const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 2000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                          toast.addEventListener('mouseenter', Swal.stopTimer)
-                          toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        }
-                      })
+                      this.shoeService.paymentShoe(customer.id).subscribe(() => {
 
-                      Toast.fire({
-                        icon: 'success',
-                        title: 'Thanh toán thành công!'
-                      })
+                        const Toast = Swal.mixin({
+                          toast: true,
+                          position: 'top-end',
+                          showConfirmButton: false,
+                          timer: 2000,
+                          timerProgressBar: true,
+                          didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                          }
+                        })
+
+                        Toast.fire({
+                          icon: 'success',
+                          title: 'Thanh toán thành công!'
+                        }).then(r => window.location.replace(''));
+                      }, error => {
+                        console.log(error);
+                      });
                     }
                   }
                 );

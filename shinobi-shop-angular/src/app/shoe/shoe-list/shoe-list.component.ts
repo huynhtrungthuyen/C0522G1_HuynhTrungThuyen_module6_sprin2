@@ -3,6 +3,8 @@ import {ShoeService} from "../../service/shoe.service";
 import {BehaviorSubject, Observable} from "rxjs";
 import {IShoeDto} from "../../model/i-shoe-dto";
 import {IType} from "../../model/i-type";
+import {TokenStorageService} from "../../service/token-storage.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-shoe-list',
@@ -24,13 +26,33 @@ export class ShoeListComponent implements OnInit {
   shoeTypesList$: Observable<IType[]>;
   manufacturer$: Observable<string[]>;
 
-  constructor(private shoeService: ShoeService) {
+  username: string;
+  roles: string[] = [];
+  isCustomer = false;
+  isAdmin = false;
+  isEmployee = false;
+
+  constructor(private shoeService: ShoeService,
+              private tokenService: TokenStorageService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
     this.getAllShoePaging();
     this.getAllShoeType();
     this.getAllManufacturer();
+
+    this.username = '';
+    this.showUsername();
+  }
+
+  showUsername() {
+    this.username = this.tokenService.getUser().username;
+    console.log(this.username);
+    this.roles = this.tokenService.getUser().roles;
+    this.isCustomer = this.roles.indexOf('ROLE_CUSTOMER') !== -1;
+    this.isEmployee = this.roles.indexOf('ROLE_EMPLOYEE') !== -1;
+    this.isAdmin = this.roles.indexOf('ROLE_ADMIN') !== -1;
   }
 
   getAllShoePaging(): void {
@@ -116,5 +138,13 @@ export class ShoeListComponent implements OnInit {
     this.nameS = '';
     this.page = 1;
     this.getAllShoePaging();
+  }
+
+  getLogin(id: number) {
+    if (this.username === '' || this.username === null || this.username === undefined) {
+      this.router.navigateByUrl('login');
+    } else {
+      this.router.navigateByUrl('detail/' + id);
+    }
   }
 }

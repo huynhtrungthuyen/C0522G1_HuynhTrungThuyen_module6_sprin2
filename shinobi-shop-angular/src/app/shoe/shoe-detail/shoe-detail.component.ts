@@ -95,7 +95,7 @@ export class ShoeDetailComponent implements OnInit {
     this.isEmployee = this.roles.indexOf('ROLE_EMPLOYEE') !== -1;
     this.isAdmin = this.roles.indexOf('ROLE_ADMIN') !== -1;
 
-    if (this.username !== '') {
+    if (this.username !== '' && this.username !== undefined) {
       this.shoeService.findCustomer(this.username).subscribe(customer => {
           if (customer != null) {
             this.idUser = customer.id;

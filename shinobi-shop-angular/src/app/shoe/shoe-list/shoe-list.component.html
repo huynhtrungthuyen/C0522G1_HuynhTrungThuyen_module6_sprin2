@@ -1,4 +1,5 @@
 <app-header></app-header>
+
 <section class="product spad">
   <div class="container">
     <div class="row">
@@ -148,8 +149,8 @@
                    box-shadow:15px 15px 15px lightblue">
                 <div class="product__discount__percent" *ngIf="item.discount > 0">-{{item.discount}}%</div>
                 <ul class="product__item__pic__hover">
-                  <li><a routerLink="/detail/{{item.id}}"><i class="fa fa-eye"></i></a></li>
-                  <li><a routerLink="/detail/{{item.id}}"><i class="fa fa-shopping-cart"></i></a></li>
+                  <li><a (click)="getLogin(item.id)" style="cursor: pointer"><i class="fa fa-eye"></i></a></li>
+                  <li><a (click)="getLogin(item.id)" style="cursor: pointer"><i class="fa fa-shopping-cart"></i></a></li>
                 </ul>
               </div>
               <div class="product__discount__item__text">

@@ -8,4 +8,5 @@ public interface IShoeCartDto {
     Integer getDiscount();
     Integer getQuantity();
     String getImage();
+    String getDate();
 }

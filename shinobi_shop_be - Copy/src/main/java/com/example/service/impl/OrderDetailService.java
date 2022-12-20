@@ -5,6 +5,8 @@ import com.example.model.OrderDetail;
 import com.example.repository.IOrderDetailRepository;
 import com.example.service.IOrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,5 +57,10 @@ public class OrderDetailService implements IOrderDetailService {
     @Override
     public void paymentShoe(Integer id) {
         iOrderDetailRepository.paymentShoe(id);
+    }
+
+    @Override
+    public Page<IShoeCartDto> findHistoryByUser(Integer id, Pageable pageable) {
+        return iOrderDetailRepository.findHistoryByUser(id, pageable);
     }
 }

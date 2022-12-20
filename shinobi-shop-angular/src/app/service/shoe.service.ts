@@ -76,4 +76,9 @@ export class ShoeService {
   paymentShoe(id: number): Observable<void> {
     return this.httpClient.get<void>(API_URL + '/shoe/payment-shoe/' + id);
   }
+
+  showHistory(curPage: number, numberRecord: number, id: number): Observable<DataResult<ICart>> {
+    return this.httpClient.get<DataResult<ICart>>(API_URL + '/shoe/history/' + id
+      + '?page=' + (curPage - 1) + '&size=' + numberRecord);
+  }
 }

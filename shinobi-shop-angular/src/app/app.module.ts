@@ -12,6 +12,7 @@ import {ShoeDetailComponent} from './shoe/shoe-detail/shoe-detail.component';
 import {ShoeCartComponent} from './shoe/shoe-cart/shoe-cart.component';
 import {SecurityComponent} from './security/security.component';
 import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from "angularx-social-login";
+import { ShoeHistoryComponent } from './shoe/shoe-history/shoe-history.component';
 
 const googleLoginOptions = {
   scope: 'profile email',
@@ -25,7 +26,8 @@ const googleLoginOptions = {
     FooterComponent,
     ShoeDetailComponent,
     ShoeCartComponent,
-    SecurityComponent
+    SecurityComponent,
+    ShoeHistoryComponent
   ],
   imports: [
     BrowserModule,

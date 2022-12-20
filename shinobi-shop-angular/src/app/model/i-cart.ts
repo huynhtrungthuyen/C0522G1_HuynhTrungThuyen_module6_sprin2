@@ -6,4 +6,5 @@ export interface ICart {
   discount?: number;
   price?: number;
   image?: string;
+  date?: string;
 }
